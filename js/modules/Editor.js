@@ -6,6 +6,7 @@ NovelWriter.Editor = class Editor {
     this.app = app;
     this.saveTimer = null;
     this.previewMode = false;
+      this._ready = false;
   }
 
   /* ---------- 初始化 ---------- */
@@ -21,6 +22,7 @@ NovelWriter.Editor = class Editor {
     this.bindEditorEvents();
     this.bindFocusMode();
     this.bindReadingMode();
+        document.getElementById('focusExitBtn').addEventListener('click', () => this.toggleFocusMode());
     this.bindPreviewToggle();
 
     window.addEventListener('beforeunload', () => this.saveCurrent());
@@ -31,6 +33,7 @@ NovelWriter.Editor = class Editor {
       const chapters = NovelWriter.Store.get('chapters');
       if (chapters.some(c => c.id === lastId)) this.selectChapter(lastId);
     }
+      this._ready = true;
   }
 
   /* ---------- 加载章节列表 ---------- */
@@ -58,7 +61,7 @@ NovelWriter.Editor = class Editor {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 6h.01M12 6h.01M16 6h.01M8 12h.01M12 12h.01M16 12h.01M8 18h.01M12 18h.01M16 18h.01"/></svg>
           </div>
           <div class="chapter-item-body">
-            <span class="chapter-name">${NovelWriter.Utils.esc(ch.title)}</span>
+            <span class="chapter-name">${NovelWriter.Utils.esc(ch.title) || '未命名章节'}</span>
             <div class="chapter-meta">
               <span class="chapter-words">${ch.wordCount || 0}字</span>
               ${target ? `<span class="chapter-target ${pct >= 100 ? 'done' : ''}">${Math.round(pct)}%</span>` : ''}
@@ -100,7 +103,7 @@ NovelWriter.Editor = class Editor {
 
   /* ---------- 选择章节 ---------- */
   selectChapter(id) {
-    this.saveCurrent();
+     if (this._ready) this.saveCurrent();
     NovelWriter.Store.set('activeChapter', id);
     const chapters = NovelWriter.Store.get('chapters');
     const ch = chapters.find(c => c.id === id);
@@ -138,18 +141,37 @@ NovelWriter.Editor = class Editor {
     if (!confirm('确定删除此章节？此操作不可撤销。')) return;
     let chapters = NovelWriter.Store.get('chapters');
     chapters = chapters.filter(c => c.id !== id);
+      // 自动重排 "第N章" 格式的标题
+      const autoPattern = /^第\d+章$/;
+      let autoIdx = 1;
+      chapters.forEach(ch => {
+        if (autoPattern.test(ch.title)) {
+          ch.title = `第${autoIdx}章`;
+          autoIdx++;
+        }
+      });
     NovelWriter.Store.set('chapters', chapters);
 
     if (NovelWriter.Store.get('activeChapter') === id) {
       NovelWriter.Store.set('activeChapter', chapters.length > 0 ? chapters[0].id : null);
-      if (chapters.length > 0) this.selectChapter(chapters[0].id);
+        if (chapters.length > 0) {
+          // 直接加载章节，不触发 saveCurrent()
+          const ch = chapters[0];
+          this.editor.innerHTML = ch.content || '';
+          this.titleInput.value = ch.title || '';
+          this.updateWordCount(ch.wordCount || 0);
+          this.updateTarget(ch);
+          this.loadChapterList();
+        }
       else {
         this.editor.innerHTML = '';
         this.titleInput.value = '';
         this.updateWordCount(0);
+          this.loadChapterList();
       }
+      } else {
+        this.loadChapterList();
     }
-    this.loadChapterList();
   }
 
   /* ---------- 保存当前章节 ---------- */

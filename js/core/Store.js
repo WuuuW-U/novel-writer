@@ -62,6 +62,20 @@ NovelWriter.Store = class Store {
         changed = true;
       }
     }
+    // 修复空标题章节
+    if (data.chapters && data.chapters.length) {
+      data.chapters.forEach((ch, i) => {
+        if (!ch.title || !ch.title.trim()) {
+          ch.title = `第${i + 1}章`;
+          changed = true;
+        }
+        // 补全缺失字段
+        if (ch.wordTarget === undefined) { ch.wordTarget = 0; changed = true; }
+        if (!ch.snapshot) { ch.snapshot = []; changed = true; }
+        if (!ch.createdAt) { ch.createdAt = Date.now(); changed = true; }
+        if (!ch.updatedAt) { ch.updatedAt = Date.now(); changed = true; }
+      });
+    }
     if (changed) Store.save();
   }
 };

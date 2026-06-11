@@ -75,8 +75,30 @@ NovelWriter.App = class App {
   }
 
   bindNav() {
+      // 恢复上次视图
+      const savedView = NovelWriter.Store.get('_lastView') || 'write';
+      const savedBtn = document.querySelector(`.nav-btn[data-view="${savedView}"]`);
+      if (savedBtn) {
+        document.querySelectorAll('.nav-btn[data-view]').forEach(b => b.classList.remove('active'));
+        savedBtn.classList.add('active');
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        const viewEl = document.getElementById('view-' + savedView);
+        if (viewEl) viewEl.classList.add('active');
+      }
+
+      // 浏览器后退/前进
+      window.addEventListener('popstate', (e) => {
+        const view = (e.state && e.state.view) || 'write';
+        const btn = document.querySelector(`.nav-btn[data-view="${view}"]`);
+        if (btn) btn.click();
+      });
+
     document.querySelectorAll('.nav-btn[data-view]').forEach(btn => {
       btn.addEventListener('click', () => {
+          // 点击导航自动退出聚焦模式
+          document.body.classList.remove('focus-mode');
+          document.getElementById('focusModeBtn')?.classList.remove('active');
+          NovelWriter.Store.set('focusMode', false);
         const view = btn.dataset.view;
         document.querySelectorAll('.nav-btn[data-view]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
@@ -84,6 +106,9 @@ NovelWriter.App = class App {
         const viewEl = document.getElementById('view-' + view);
         if (viewEl) viewEl.classList.add('active');
         if (view === 'progress') this.stats.load();
+          // 记录最近视图并推入浏览器历史
+          NovelWriter.Store.set('_lastView', view);
+          history.pushState({ view }, '', '#' + view);
       });
     });
   }
