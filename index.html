@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>墨笔 · 小说创作工具</title>
   <link rel="stylesheet" href="css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts removed for China accessibility; using system fallback fonts -->
 </head>
 <body>
 
@@ -80,6 +80,9 @@
         <div class="editor-panel">
           <div class="editor-toolbar">
             <div class="toolbar-group">
+              <button class="icon-btn mobile-chapter-toggle" id="mobileChapterToggle" title="章节列表">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h12"/></svg>
+              </button>
               <button class="icon-btn" id="formatBold" title="粗体 (Ctrl+B)">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h8a4 4 0 014 4 4 4 0 01-4 4H6zM6 12h9a4 4 0 014 4 4 4 0 01-4 4H6z"/></svg>
               </button>
@@ -248,6 +251,9 @@
 
   </main>
 </div>
+
+<!-- 移动端章节面板遮罩 -->
+<div class="chapter-overlay" id="chapterOverlay"></div>
 
 <!-- ========== 对话框 ========== -->
 <div class="dialog-overlay" id="dialogOverlay">

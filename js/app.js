@@ -35,6 +35,7 @@ NovelWriter.App = class App {
     App.exportMod = this.exportMod;
     App._dialogHandler = null;
     this.bindNav();
+    this.bindMobile();
     this.bindTheme();
     this.bindBackup();
     this.editor.init();
@@ -49,6 +50,28 @@ NovelWriter.App = class App {
       document.body.classList.add('focus-mode');
       document.getElementById('focusModeBtn').classList.add('active');
     }
+  }
+
+  bindMobile() {
+    const toggle = document.getElementById('mobileChapterToggle');
+    const panel = document.getElementById('chapterPanel');
+    const overlay = document.getElementById('chapterOverlay');
+    if (!toggle || !panel || !overlay) return;
+    const close = () => {
+      panel.classList.remove('open');
+      overlay.classList.remove('active');
+    };
+    toggle.addEventListener('click', () => {
+      const isOpen = panel.classList.contains('open');
+      if (isOpen) { close(); } else {
+        panel.classList.add('open');
+        overlay.classList.add('active');
+      }
+    });
+    overlay.addEventListener('click', close);
+    document.querySelectorAll('[data-view]').forEach(btn => {
+      btn.addEventListener('click', close);
+    });
   }
 
   bindNav() {
