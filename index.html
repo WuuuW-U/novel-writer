@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>墨笔 · 小说创作工具</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ========== 侧边导航 ========== -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+      </svg>
+      <span class="logo-text">墨笔</span>
+    </div>
+
+    <div class="nav-items">
+      <button class="nav-btn active" data-view="write" title="写作">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125"/></svg>
+        <span>写作</span>
+      </button>
+      <button class="nav-btn" data-view="outline" title="大纲">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"/></svg>
+        <span>大纲</span>
+      </button>
+      <button class="nav-btn" data-view="characters" title="角色">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0"/></svg>
+        <span>角色</span>
+      </button>
+      <button class="nav-btn" data-view="timeline" title="时间线">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>时间线</span>
+      </button>
+      <button class="nav-btn" data-view="world" title="设定">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"/></svg>
+        <span>设定</span>
+      </button>
+      <button class="nav-btn" data-view="progress" title="统计">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
+        <span>统计</span>
+      </button>
+    </div>
+
+    <div class="sidebar-footer">
+      <button class="nav-btn" id="searchBtn" title="搜索 (Ctrl+F)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+        <span>搜索</span>
+      </button>
+      <button class="nav-btn" id="exportBtn" title="导出">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+        <span>导出</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ========== 主内容 ========== -->
+  <main class="main-content">
+
+    <!-- ===== 写作视图 ===== -->
+    <section class="view active" id="view-write">
+      <div class="write-layout">
+        <!-- 章节面板 -->
+        <div class="chapter-panel" id="chapterPanel">
+          <div class="panel-header">
+            <h3>章节</h3>
+            <button class="icon-btn" id="addChapterBtn" title="新建章节">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4.5v15m7.5-7.5h-15"/></svg>
+            </button>
+          </div>
+          <div class="chapter-list" id="chapterList"></div>
+        </div>
+
+        <!-- 编辑器 -->
+        <div class="editor-panel">
+          <div class="editor-toolbar">
+            <div class="toolbar-group">
+              <button class="icon-btn" id="formatBold" title="粗体 (Ctrl+B)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h8a4 4 0 014 4 4 4 0 01-4 4H6zM6 12h9a4 4 0 014 4 4 4 0 01-4 4H6z"/></svg>
+              </button>
+              <button class="icon-btn" id="formatItalic" title="斜体 (Ctrl+I)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 4h-9M14 20H5M15 4L9 20"/></svg>
+              </button>
+              <span class="toolbar-divider"></span>
+              <button class="icon-btn" id="previewToggle" title="预览">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg>
+              </button>
+              <button class="icon-btn" id="focusModeBtn" title="聚焦模式">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg>
+              </button>
+              <span class="toolbar-divider"></span>
+              <button class="icon-btn" id="readingModeBtn" title="阅读模式">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+              </button>
+              <button class="icon-btn" id="snapshotBtn" title="快照">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
+              </button>
+            </div>
+            <div class="chapter-title-wrap">
+              <input type="text" id="chapterTitle" class="chapter-title-input" placeholder="章节标题…">
+            </div>
+            <div class="editor-info">
+              <span id="wordCount" class="word-count">0 字</span>
+              <span id="autoSaveStatus" class="save-status">已保存</span>
+              <button class="icon-btn" id="setTargetBtn" title="设置字数目标">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="chapter-target-bar" id="chapterTarget"></div>
+          <div class="editor-container">
+            <div id="editor" contenteditable="true" class="editor-area" data-placeholder="开始写你的故事…"></div>
+            <div class="editor-preview" id="editorPreview"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 大纲视图 ===== -->
+    <section class="view" id="view-outline">
+      <div class="view-header">
+        <h2>大纲</h2>
+        <button class="primary-btn" id="addOutlineBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4.5v15m7.5-7.5h-15"/></svg>
+          添加节点
+        </button>
+      </div>
+      <div class="outline-tree" id="outlineTree"></div>
+    </section>
+
+    <!-- ===== 角色视图 ===== -->
+    <section class="view" id="view-characters">
+      <div class="view-header">
+        <h2>角色</h2>
+        <button class="primary-btn" id="addCharBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4.5v15m7.5-7.5h-15"/></svg>
+          新建角色
+        </button>
+      </div>
+      <div class="characters-grid" id="charactersGrid"></div>
+    </section>
+
+    <!-- ===== 时间线视图 ===== -->
+    <section class="view" id="view-timeline">
+      <div class="view-header">
+        <h2>时间线</h2>
+        <button class="primary-btn" id="addEventBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4.5v15m7.5-7.5h-15"/></svg>
+          添加事件
+        </button>
+      </div>
+      <div class="timeline-container" id="timelineContainer"></div>
+    </section>
+
+    <!-- ===== 设定视图 ===== -->
+    <section class="view" id="view-world">
+      <div class="view-header">
+        <h2>设定</h2>
+        <button class="primary-btn" id="addSettingBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4.5v15m7.5-7.5h-15"/></svg>
+          添加设定
+        </button>
+      </div>
+      <div class="settings-grid" id="settingsGrid"></div>
+    </section>
+
+    <!-- ===== 统计视图 ===== -->
+    <section class="view" id="view-progress">
+      <div class="view-header">
+        <h2>统计</h2>
+        <div class="toolbar-group">
+          <div class="theme-picker">
+            <span style="font-size:11px;color:var(--text-muted);letter-spacing:0.5px">主题</span>
+            <button class="theme-option" data-theme="amber" style="background:#d4a047" title="琥珀"></button>
+            <button class="theme-option" data-theme="gold" style="background:#e8b84c" title="鎏金"></button>
+            <button class="theme-option" data-theme="teal" style="background:#22d3ee" title="青碧"></button>
+            <button class="theme-option" data-theme="rose" style="background:#e04a7a" title="玫瑰"></button>
+            <button class="theme-option" data-theme="purple" style="background:#a855f7" title="紫烟"></button>
+            <button class="theme-option" data-theme="green" style="background:#4ade80" title="翠微"></button>
+          </div>
+        </div>
+      </div>
+      <div class="progress-dashboard">
+        <div class="stat-cards">
+          <div class="stat-card">
+            <div class="stat-icon total-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="totalWords">0</span>
+              <span class="stat-label">总字数</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon chapter-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="totalChapters">0</span>
+              <span class="stat-label">章节</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon char-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="totalCharacters">0</span>
+              <span class="stat-label">角色</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon days-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="writingDays">0</span>
+              <span class="stat-label">写作天数</span>
+            </div>
+          </div>
+        </div>
+        <div class="progress-section">
+          <div class="daily-goal">
+            <h3>每日目标</h3>
+            <div class="goal-setting">
+              <label>目标字数</label>
+              <input type="number" id="dailyGoalInput" value="2000" min="100" step="100">
+            </div>
+            <div class="goal-progress">
+              <div class="progress-bar">
+                <div class="progress-fill" id="dailyProgressFill"></div>
+              </div>
+              <span class="goal-text" id="dailyGoalText">0 / 2000 字</span>
+            </div>
+          </div>
+          <div class="writing-history">
+            <h3>近 7 日</h3>
+            <div class="bar-chart" id="barChart"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ========== 对话框 ========== -->
+<div class="dialog-overlay" id="dialogOverlay">
+  <div class="dialog">
+    <div class="dialog-header">
+      <h3 id="dialogTitle">标题</h3>
+      <button class="dialog-close" onclick="NovelWriter.App.closeDialog()">&times;</button>
+    </div>
+    <div class="dialog-body" id="dialogBody"></div>
+    <div class="dialog-footer" id="dialogFooter">
+      <button class="btn-cancel" onclick="NovelWriter.App.closeDialog()">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 阅读模式 ========== -->
+<div class="reading-overlay" id="readingOverlay">
+  <div class="reading-header">
+    <span class="reading-title"></span>
+    <button class="reading-close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="reading-content"></div>
+</div>
+
+<!-- ========== 脚本 ========== -->
+<script src="js/core/Store.js"></script>
+<script src="js/core/Utils.js"></script>
+<script src="js/modules/Editor.js"></script>
+<script src="js/modules/Outline.js"></script>
+<script src="js/modules/Characters.js"></script>
+<script src="js/modules/Timeline.js"></script>
+<script src="js/modules/Settings.js"></script>
+<script src="js/modules/Stats.js"></script>
+<script src="js/modules/Search.js"></script>
+<script src="js/modules/Export.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
